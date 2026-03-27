@@ -1,8 +1,11 @@
 package mumm.weatherstation.controller;
 
 import mumm.weatherstation.controller.dto.Response;
+import mumm.weatherstation.entity.Station;
 import mumm.weatherstation.service.StationService;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class StationManagerController{
@@ -19,9 +22,8 @@ public class StationManagerController{
     }
 
     @GetMapping("stations/list")
-    public Response<String> getStations() {
-        this.stationService.getAll();
-        return new Response<>("get stations");
+    public Response<List<Station>> getStations() {
+        return new Response<>(this.stationService.getAll());
     }
 
     @PutMapping("stations/new")
