@@ -6,8 +6,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class TestController {
-    @GetMapping("/")
-    public Response<String> sayHello() {
-        return new Response<>("Hello World!");
-    }
+
+	@GetMapping("/")
+	public Response<String> sayHello() {
+		return new Response<>("Hello World!");
+	}
+
 }

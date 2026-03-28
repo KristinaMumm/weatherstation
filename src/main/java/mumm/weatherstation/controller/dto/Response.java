@@ -5,40 +5,51 @@ import java.util.List;
 
 public class Response<T> {
 
-    private T data;
-    private List<ErrorMessage> errors;
+	private T data;
 
-    public Response(T data, List<ErrorMessage> errors) {
-        this.data = data;
-        this.errors = errors;
-    }
+	private List<ErrorMessage> errors;
 
-    public Response(T data) {
-        this.data = data;
-        this.errors = Collections.emptyList();
-    }
+	public Response(T data, List<ErrorMessage> errors) {
+		this.data = data;
+		this.errors = errors;
+	}
 
-    public T getData() {
-        return data;
-    }
+	public Response(T data) {
+		this.data = data;
+		this.errors = Collections.emptyList();
+	}
 
-    public List<ErrorMessage> getErrors() {
-        return errors;
-    }
+	public static <T> Response<T> success(T data) {
+		return new Response<>(data);
+	}
 
-    public void setData(T data) {
-        this.data = data;
-    }
+	public static <T> Response<T> error(String code, String message) {
+		return new Response<>(null, List.of(new ErrorMessage(message)));
+	}
 
-    public void setErrors(List<ErrorMessage> errors) {
-        this.errors = errors;
-    }
+	public static <T> Response<T> error(List<ErrorMessage> errors) {
+		return new Response<>(null, errors);
+	}
 
-    @Override
-    public String toString() {
-        return "Response{" +
-                "data=" + data +
-                ", errors=" + errors +
-                '}';
-    }
+	public T getData() {
+		return data;
+	}
+
+	public List<ErrorMessage> getErrors() {
+		return errors;
+	}
+
+	public void setData(T data) {
+		this.data = data;
+	}
+
+	public void setErrors(List<ErrorMessage> errors) {
+		this.errors = errors;
+	}
+
+	@Override
+	public String toString() {
+		return "Response{" + "data=" + data + ", errors=" + errors + '}';
+	}
+
 }

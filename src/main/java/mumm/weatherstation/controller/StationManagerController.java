@@ -8,33 +8,34 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-public class StationManagerController{
-    private final StationService stationService;
+public class StationManagerController {
 
-    public StationManagerController(StationService stationService) {
-        this.stationService = stationService;
-    }
+	private final StationService stationService;
 
-    @GetMapping("stations/{id}")
-    public Response<String> getStation(@PathVariable Long id) {
-        this.stationService.get(id);
-        return new Response<>("get 1 station");
-    }
+	public StationManagerController(StationService stationService) {
+		this.stationService = stationService;
+	}
 
-    @GetMapping("stations/list")
-    public Response<List<Station>> getStations() {
-        return new Response<>(this.stationService.getAll());
-    }
+	@GetMapping("stations/{id}")
+	public Response<Station> getStation(@PathVariable Long id) {
+		return Response.success(this.stationService.get(id));
+	}
 
-    @PutMapping("stations/new")
-    public Response<String> insertStation() {
-        this.stationService.insert();
-        return new Response<>("insert station");
-    }
+	@GetMapping("stations/list")
+	public Response<List<Station>> getStations() {
+		return Response.success(this.stationService.getAll());
+	}
 
-    @PostMapping("stations/{id}")
-    public Response<String> updateStation(@PathVariable Long id) {
-        this.stationService.update(id);
-        return new Response<>("update station");
-    }
+	@PutMapping("stations/new")
+	public Response<String> insertStation() {
+		this.stationService.insert();
+		return Response.success("insert station");
+	}
+
+	@PostMapping("stations/{id}")
+	public Response<String> updateStation(@PathVariable Long id) {
+		this.stationService.update(id);
+		return Response.success("update station");
+	}
+
 }
