@@ -1,34 +1,24 @@
 package mumm.weatherstation.controller.dto;
 
-import java.util.Collections;
 import java.util.List;
 
-public class Response<T> {
+public final class Response<T> {
 
-	private T data;
+	private final T data;
 
-	private List<ErrorMessage> errors;
+	private final List<ErrorMessage> errors;
 
-	public Response(T data, List<ErrorMessage> errors) {
+	private Response(T data, List<ErrorMessage> errors) {
 		this.data = data;
-		this.errors = errors;
-	}
-
-	public Response(T data) {
-		this.data = data;
-		this.errors = Collections.emptyList();
+		this.errors = List.copyOf(errors);
 	}
 
 	public static <T> Response<T> success(T data) {
-		return new Response<>(data);
+		return new Response<>(data, List.of());
 	}
 
 	public static <T> Response<T> error(String code, String message) {
-		return new Response<>(null, List.of(new ErrorMessage(message)));
-	}
-
-	public static <T> Response<T> error(List<ErrorMessage> errors) {
-		return new Response<>(null, errors);
+		return new Response<>(null, List.of(new ErrorMessage(code, message)));
 	}
 
 	public T getData() {
@@ -37,19 +27,6 @@ public class Response<T> {
 
 	public List<ErrorMessage> getErrors() {
 		return errors;
-	}
-
-	public void setData(T data) {
-		this.data = data;
-	}
-
-	public void setErrors(List<ErrorMessage> errors) {
-		this.errors = errors;
-	}
-
-	@Override
-	public String toString() {
-		return "Response{" + "data=" + data + ", errors=" + errors + '}';
 	}
 
 }

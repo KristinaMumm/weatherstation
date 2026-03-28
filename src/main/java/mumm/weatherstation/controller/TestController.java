@@ -9,7 +9,7 @@ public class TestController {
 
 	@GetMapping("/health")
 	public Response<String> sayHello() {
-		return new Response<>("Hello World!");
+		return Response.success("Hello World!");
 	}
 
 }
