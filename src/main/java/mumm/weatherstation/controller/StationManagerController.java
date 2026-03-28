@@ -28,8 +28,7 @@ public class StationManagerController {
 	}
 
 	@PutMapping("stations/new")
-	public Response<StationResponse> insertStation(@RequestBody StationRequest request
-	) {
+	public Response<StationResponse> insertStation(@RequestBody StationRequest request) {
 		StationResponse newStation = this.stationService.insert(request);
 		return Response.success(newStation);
 	}
@@ -37,7 +36,7 @@ public class StationManagerController {
 	@PostMapping("stations/{id}")
 	public Response<StationResponse> updateStation(@PathVariable Long id) {
 		this.stationService.update(id);
-        return Response.success(this.stationService.get(id));
+		return Response.success(this.stationService.get(id));
 	}
 
 }

@@ -13,26 +13,22 @@ import java.util.NoSuchElementException;
 public class StationService {
 
 	private final StationRepository stationRepository;
+
 	private final StationMapper stationMapper;
 
-	public StationService(StationRepository stationRepository,
-						  StationMapper stationMapper) {
+	public StationService(StationRepository stationRepository, StationMapper stationMapper) {
 		this.stationRepository = stationRepository;
 		this.stationMapper = stationMapper;
 	}
 
 	public StationResponse get(Long id) {
-		Station station = stationRepository.findById(id)
-				.orElseThrow(NoSuchElementException::new);
+		Station station = stationRepository.findById(id).orElseThrow(NoSuchElementException::new);
 
 		return stationMapper.toResponse(station);
 	}
 
 	public List<StationResponse> getAll() {
-		return stationRepository.findAll()
-				.stream()
-				.map(stationMapper::toResponse)
-				.toList();
+		return stationRepository.findAll().stream().map(stationMapper::toResponse).toList();
 	}
 
 	public StationResponse insert(StationRequest request) {
@@ -45,4 +41,5 @@ public class StationService {
 
 	public void update(Long id) {
 	}
+
 }

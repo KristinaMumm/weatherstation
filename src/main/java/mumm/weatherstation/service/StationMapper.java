@@ -8,20 +8,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class StationMapper {
 
-    public Station toEntity(StationRequest request) {
-        return new Station(
-                request.name(),
-                request.latitude(),
-                request.longitude()
-        );
-    }
+	public Station toEntity(StationRequest request) {
+		return new Station(request.name(), request.latitude(), request.longitude());
+	}
 
-    public StationResponse toResponse(Station station) {
-        return new StationResponse(
-                station.id,
-                station.name,
-                station.latitude,
-                station.longitude
-        );
-    }
+	public StationResponse toResponse(Station station) {
+		return new StationResponse(station.id, station.name, station.latitude, station.longitude);
+	}
+
 }
