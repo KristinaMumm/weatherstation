@@ -21,7 +21,14 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http.csrf(AbstractHttpConfigurer::disable)
-			.authorizeHttpRequests(auth -> auth.requestMatchers("/health").permitAll().anyRequest().authenticated())
+			.authorizeHttpRequests(auth -> auth.requestMatchers("/health")
+				.permitAll()
+				.requestMatchers("/stations/*/weather")
+				.permitAll()
+				.requestMatchers("/weather/batch")
+				.permitAll()
+				.anyRequest()
+				.authenticated())
 			.httpBasic(Customizer.withDefaults())
 			.build();
 	}
