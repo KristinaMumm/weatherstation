@@ -29,4 +29,10 @@ public class Station {
 		this.longitude = longitude;
 	}
 
+	public Station(String name, Double latitude, Double longitude) {
+		this.name = name;
+		this.latitude = latitude;
+		this.longitude = longitude;
+	}
+
 }

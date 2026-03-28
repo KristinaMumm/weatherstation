@@ -1,7 +1,8 @@
 package mumm.weatherstation.controller;
 
 import mumm.weatherstation.controller.dto.Response;
-import mumm.weatherstation.entity.Station;
+import mumm.weatherstation.controller.dto.StationRequest;
+import mumm.weatherstation.controller.dto.StationResponse;
 import mumm.weatherstation.service.StationService;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,25 +18,26 @@ public class StationManagerController {
 	}
 
 	@GetMapping("stations/{id}")
-	public Response<Station> getStation(@PathVariable Long id) {
+	public Response<StationResponse> getStation(@PathVariable Long id) {
 		return Response.success(this.stationService.get(id));
 	}
 
 	@GetMapping("stations/list")
-	public Response<List<Station>> getStations() {
+	public Response<List<StationResponse>> getStations() {
 		return Response.success(this.stationService.getAll());
 	}
 
 	@PutMapping("stations/new")
-	public Response<String> insertStation() {
-		this.stationService.insert();
-		return Response.success("insert station");
+	public Response<StationResponse> insertStation(@RequestBody StationRequest request
+	) {
+		StationResponse newStation = this.stationService.insert(request);
+		return Response.success(newStation);
 	}
 
 	@PostMapping("stations/{id}")
-	public Response<String> updateStation(@PathVariable Long id) {
+	public Response<StationResponse> updateStation(@PathVariable Long id) {
 		this.stationService.update(id);
-		return Response.success("update station");
+        return Response.success(this.stationService.get(id));
 	}
 
 }
