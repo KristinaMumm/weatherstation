@@ -1,4 +1,4 @@
-package mumm.weatherstation.service;
+package mumm.weatherstation.mapper;
 
 import mumm.weatherstation.controller.dto.StationRequest;
 import mumm.weatherstation.controller.dto.StationResponse;

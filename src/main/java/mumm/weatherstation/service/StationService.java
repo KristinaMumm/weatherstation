@@ -4,6 +4,7 @@ import mumm.weatherstation.controller.dto.StationRequest;
 import mumm.weatherstation.controller.dto.StationResponse;
 import mumm.weatherstation.entity.Station;
 import mumm.weatherstation.repository.StationRepository;
+import mumm.weatherstation.mapper.StationMapper;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.NoSuchElementException;

@@ -1,4 +1,4 @@
-package mumm.weatherstation.security;
+package mumm.weatherstation.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
