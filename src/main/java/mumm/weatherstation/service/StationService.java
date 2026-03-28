@@ -5,7 +5,6 @@ import mumm.weatherstation.controller.dto.StationResponse;
 import mumm.weatherstation.entity.Station;
 import mumm.weatherstation.repository.StationRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -22,9 +21,7 @@ public class StationService {
 	}
 
 	public StationResponse get(Long id) {
-		Station station = stationRepository.findById(id).orElseThrow(NoSuchElementException::new);
-
-		return stationMapper.toResponse(station);
+		return stationMapper.toResponse(getEntity(id));
 	}
 
 	public List<StationResponse> getAll() {
@@ -33,13 +30,19 @@ public class StationService {
 
 	public StationResponse insert(StationRequest request) {
 		Station station = stationMapper.toEntity(request);
-
-		Station saved = stationRepository.save(station);
-
-		return stationMapper.toResponse(saved);
+		return stationMapper.toResponse(stationRepository.save(station));
 	}
 
-	public void update(Long id) {
+	public StationResponse update(Long id, StationRequest request) {
+		Station existing = getEntity(id);
+
+		existing.update(request.name(), request.latitude(), request.longitude());
+
+		return stationMapper.toResponse(stationRepository.save(existing));
+	}
+
+	private Station getEntity(Long id) {
+		return stationRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Station not found: " + id));
 	}
 
 }

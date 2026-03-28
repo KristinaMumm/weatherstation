@@ -13,7 +13,7 @@ public class StationMapper {
 	}
 
 	public StationResponse toResponse(Station station) {
-		return new StationResponse(station.id, station.name, station.latitude, station.longitude);
+		return new StationResponse(station.getId(), station.getName(), station.getLatitude(), station.getLongitude());
 	}
 
 }

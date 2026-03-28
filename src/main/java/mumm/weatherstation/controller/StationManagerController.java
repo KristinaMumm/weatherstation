@@ -34,9 +34,8 @@ public class StationManagerController {
 	}
 
 	@PostMapping("stations/{id}")
-	public Response<StationResponse> updateStation(@PathVariable Long id) {
-		this.stationService.update(id);
-		return Response.success(this.stationService.get(id));
+	public Response<StationResponse> updateStation(@PathVariable Long id, @RequestBody StationRequest request) {
+		return Response.success(this.stationService.update(id, request));
 	}
 
 }

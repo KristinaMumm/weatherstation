@@ -8,28 +8,44 @@ public class Station {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Long id;
+	@Column(updatable = false)
+	private Long id;
 
 	@Column(nullable = false)
-	public String name;
+	private String name;
 
 	@Column(nullable = false)
-	public Double latitude;
+	private Double latitude;
 
 	@Column(nullable = false)
-	public Double longitude;
+	private Double longitude;
 
-	public Station() {
+	protected Station() {
 	}
 
-	public Station(Long id, String name, Double latitude, Double longitude) {
-		this.id = id;
+	public Station(String name, Double latitude, Double longitude) {
 		this.name = name;
 		this.latitude = latitude;
 		this.longitude = longitude;
 	}
 
-	public Station(String name, Double latitude, Double longitude) {
+	public Long getId() {
+		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public Double getLatitude() {
+		return latitude;
+	}
+
+	public Double getLongitude() {
+		return longitude;
+	}
+
+	public void update(String name, Double latitude, Double longitude) {
 		this.name = name;
 		this.latitude = latitude;
 		this.longitude = longitude;
