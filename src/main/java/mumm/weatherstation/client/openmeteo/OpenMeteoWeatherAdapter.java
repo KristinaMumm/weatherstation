@@ -2,30 +2,35 @@ package mumm.weatherstation.client.openmeteo;
 
 import mumm.weatherstation.controller.dto.StationDto;
 import mumm.weatherstation.controller.dto.WeatherDto;
+import mumm.weatherstation.controller.exception.WeatherProviderException;
 import mumm.weatherstation.service.adapter.WeatherAdapter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Component
 public class OpenMeteoWeatherAdapter implements WeatherAdapter {
 
-    private static final List<String> CURRENT_PARAMS = List.of("temperature_2m", "wind_speed_10m", "precipitation");
+    private static final List<String> CURRENT_PARAMS = List.of(
+            "temperature_2m",
+            "wind_speed_10m",
+            "precipitation"
+    );
 
     private static final String WIND_SPEED_UNIT = "ms";
 
     private final String baseUrl;
-
     private final RestTemplate restTemplate;
-
     private final WeatherMapper weatherMapper;
 
     public OpenMeteoWeatherAdapter(
@@ -41,31 +46,78 @@ public class OpenMeteoWeatherAdapter implements WeatherAdapter {
     @Override
     public List<WeatherDto> getWeather(List<StationDto> stations) {
         String url = buildUrl(stations);
+        List<WeatherResponse> responses;
 
-        List<WeatherResponse> responses = stations.size() == 1 ? List.of(fetchSingle(url)) : fetchMultiple(url);
-
-        if (responses.size() != stations.size()) {
-            throw new IllegalStateException(
-                    "Mismatch: stations=" + stations.size() + ", responses=" + responses.size());
+        try {
+            responses = stations.size() == 1
+                    ? List.of(fetchSingle(url))
+                    : fetchMultiple(url);
+        } catch (HttpStatusCodeException ex) {
+            throw new WeatherProviderException(
+                    "Weather provider returned HTTP status " + ex.getStatusCode().value(),
+                    ex
+            );
+        } catch (ResourceAccessException ex) {
+            throw new WeatherProviderException(
+                    "Weather provider is unreachable or timed out",
+                    ex
+            );
         }
+
+        validateResponseCount(stations, responses);
 
         return mapToDto(stations, responses);
     }
 
     private WeatherResponse fetchSingle(String url) {
-        ResponseEntity<WeatherResponse> response = restTemplate.exchange(url, HttpMethod.GET, null,
+        WeatherResponse body = fetchBody(
+                url,
                 new ParameterizedTypeReference<>() {
-                });
+                }
+        );
 
-        return response.getBody();
+        validateWeatherResponse(body);
+
+        return body;
     }
 
     private List<WeatherResponse> fetchMultiple(String url) {
-        ResponseEntity<List<WeatherResponse>> response = restTemplate.exchange(url, HttpMethod.GET, null,
+        List<WeatherResponse> body = fetchBody(
+                url,
                 new ParameterizedTypeReference<>() {
-                });
+                }
+        );
 
-        return response.getBody();
+        if (body.isEmpty()) {
+            throw new WeatherProviderException("Weather provider returned empty response");
+        }
+
+        body.forEach(this::validateWeatherResponse);
+
+        return body;
+    }
+
+    private <T> T fetchBody(String url, ParameterizedTypeReference<T> responseType) {
+        ResponseEntity<T> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                null,
+                responseType
+        );
+
+        T body = response.getBody();
+
+        if (body == null) {
+            throw new WeatherProviderException("Weather provider returned empty response");
+        }
+
+        return body;
+    }
+
+    private void validateWeatherResponse(WeatherResponse response) {
+        if (response.current() == null) {
+            throw new WeatherProviderException("Weather provider returned insufficient data");
+        }
     }
 
     private String buildUrl(List<StationDto> stations) {
@@ -86,14 +138,20 @@ public class OpenMeteoWeatherAdapter implements WeatherAdapter {
     }
 
     private List<WeatherDto> mapToDto(List<StationDto> stations, List<WeatherResponse> responses) {
-        // TODO : what if Open-Meteo changes order of coordinates?
-        List<WeatherDto> result = new ArrayList<>();
-
-        for (int i = 0; i < stations.size(); i++) {
-            result.add(weatherMapper.toDto(stations.get(i), responses.get(i)));
-        }
-
-        return result;
+        // Assumption that Open-Meteo returns results in the same order as requested coordinates.
+        return IntStream.range(0, stations.size())
+                .mapToObj(i -> weatherMapper.toDto(stations.get(i), responses.get(i)))
+                .toList();
     }
 
+    private void validateResponseCount(List<StationDto> stations, List<WeatherResponse> responses) {
+        if (responses.size() != stations.size()) {
+            throw new WeatherProviderException(
+                    "Weather provider returned data for unexpected number of stations: stations="
+                            + stations.size()
+                            + ", responses="
+                            + responses.size()
+            );
+        }
+    }
 }

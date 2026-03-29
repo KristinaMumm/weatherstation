@@ -60,4 +60,10 @@ public class GlobalExceptionHandler {
                 "Request body contains invalid data type"
         );
     }
+
+    @ExceptionHandler(WeatherProviderException.class)
+    @ResponseStatus(HttpStatus.BAD_GATEWAY)
+    public Response<Void> handleWeatherProviderException(WeatherProviderException ex) {
+        return Response.error("weather_provider_error", ex.getMessage());
+    }
 }

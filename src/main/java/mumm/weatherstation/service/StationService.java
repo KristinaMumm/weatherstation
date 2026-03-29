@@ -30,6 +30,9 @@ public class StationService {
     }
 
     public List<StationDto> get(Set<Long> ids) {
+        if (ids.isEmpty()) {
+            throw new IllegalStateException("No station ids are provided");
+        }
 
         List<Station> stations = this.stationRepository.findAllById(ids);
 
