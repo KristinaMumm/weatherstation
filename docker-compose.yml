@@ -31,7 +31,7 @@ services:
       mysql:
         condition: service_healthy
     environment:
-      MYSQL_URL: jdbc:mysql://mysql:${MYSQL_PORT:3306}/weatherstation?allowPublicKeyRetrieval=true&useSSL=false
+      MYSQL_URL: jdbc:mysql://mysql:${MYSQL_PORT:-3306}/weatherstation?allowPublicKeyRetrieval=true&useSSL=false
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       APP_SECURITY_USERNAME: ${APP_ADMIN_USERNAME}
