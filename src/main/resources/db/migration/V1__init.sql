@@ -1,8 +1,9 @@
-CREATE TABLE station (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    latitude DECIMAL(9,6) NOT NULL,
-    longitude DECIMAL(9,6) NOT NULL
+CREATE TABLE station
+(
+    id        BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name      VARCHAR(255)  NOT NULL,
+    latitude  DECIMAL(9, 6) NOT NULL,
+    longitude DECIMAL(9, 6) NOT NULL
 );
 
 INSERT INTO station (name, latitude, longitude)

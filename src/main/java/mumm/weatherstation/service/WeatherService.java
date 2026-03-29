@@ -11,19 +11,19 @@ import java.util.List;
 @Service
 public class WeatherService {
 
-	private final StationService stationService;
+    private final StationService stationService;
 
-	private final WeatherAdapter weatherAdapter;
+    private final WeatherAdapter weatherAdapter;
 
-	public WeatherService(StationService stationService, WeatherAdapter weatherAdapter) {
-		this.stationService = stationService;
-		this.weatherAdapter = weatherAdapter;
-	}
+    public WeatherService(StationService stationService, WeatherAdapter weatherAdapter) {
+        this.stationService = stationService;
+        this.weatherAdapter = weatherAdapter;
+    }
 
-	public List<WeatherDto> getWeatherData(WeatherBatchRequest request) {
-		List<StationDto> stations = stationService.get(request.stationIds());
+    public List<WeatherDto> getWeatherData(WeatherBatchRequest request) {
+        List<StationDto> stations = stationService.get(request.stationIds());
 
-		return this.weatherAdapter.getWeather(stations);
-	}
+        return this.weatherAdapter.getWeather(stations);
+    }
 
 }

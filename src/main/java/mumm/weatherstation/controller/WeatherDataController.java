@@ -5,26 +5,26 @@ import mumm.weatherstation.controller.dto.WeatherBatchRequest;
 import mumm.weatherstation.controller.dto.WeatherDto;
 import mumm.weatherstation.service.WeatherService;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
-import java.util.Set;
 
 @RestController
 public class WeatherDataController {
 
-	private final WeatherService weatherService;
+    private final WeatherService weatherService;
 
-	public WeatherDataController(WeatherService weatherService) {
-		this.weatherService = weatherService;
-	}
+    public WeatherDataController(WeatherService weatherService) {
+        this.weatherService = weatherService;
+    }
 
-	@GetMapping("/stations/{id}/weather")
-	public Response<String> getStationWeather(@PathVariable String id) {
-		return Response.success("Hello World!");
-	}
+    @GetMapping("/stations/{id}/weather")
+    public Response<String> getStationWeather(@PathVariable String id) {
+        return Response.success("Hello World!");
+    }
 
-	@PostMapping("/weather/batch")
-	public Response<List<WeatherDto>> getStationWeatherBatch(@RequestBody WeatherBatchRequest request) {
-		return Response.success(this.weatherService.getWeatherData(request));
-	}
+    @PostMapping("/weather/batch")
+    public Response<List<WeatherDto>> getStationWeatherBatch(@RequestBody WeatherBatchRequest request) {
+        return Response.success(this.weatherService.getWeatherData(request));
+    }
 
 }

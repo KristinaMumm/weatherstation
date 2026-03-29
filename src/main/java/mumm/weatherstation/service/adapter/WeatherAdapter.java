@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface WeatherAdapter {
 
-	List<WeatherDto> getWeather(List<StationDto> stations);
+    List<WeatherDto> getWeather(List<StationDto> stations);
 
 }
