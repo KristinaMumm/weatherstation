@@ -1,14 +1,12 @@
 package mumm.weatherstation.controller;
 
 import mumm.weatherstation.controller.dto.Response;
+import mumm.weatherstation.controller.dto.WeatherBatchRequest;
 import mumm.weatherstation.controller.dto.WeatherDto;
 import mumm.weatherstation.service.WeatherService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class WeatherDataController {
@@ -25,8 +23,8 @@ public class WeatherDataController {
 	}
 
 	@PostMapping("/weather/batch")
-	public Response<List<WeatherDto>> getStationWeatherBatch() {
-		return Response.success(this.weatherService.getWeatherData());
+	public Response<List<WeatherDto>> getStationWeatherBatch(@RequestBody WeatherBatchRequest request) {
+		return Response.success(this.weatherService.getWeatherData(request));
 	}
 
 }
