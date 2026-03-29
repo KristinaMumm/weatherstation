@@ -21,7 +21,7 @@ import java.util.stream.IntStream;
 @Component
 public class OpenMeteoWeatherAdapter implements WeatherAdapter {
 
-    private static final List<String> CURRENT_PARAMS = List.of(
+    private static final List<String> WEATHER_PARAMS = List.of(
             "temperature_2m",
             "wind_speed_10m",
             "precipitation"
@@ -132,7 +132,7 @@ public class OpenMeteoWeatherAdapter implements WeatherAdapter {
         return UriComponentsBuilder.fromUriString(baseUrl)
                 .queryParam("latitude", latitudes)
                 .queryParam("longitude", longitudes)
-                .queryParam("current", String.join(",", CURRENT_PARAMS))
+                .queryParam("current", String.join(",", WEATHER_PARAMS))
                 .queryParam("wind_speed_unit", WIND_SPEED_UNIT)
                 .toUriString();
     }

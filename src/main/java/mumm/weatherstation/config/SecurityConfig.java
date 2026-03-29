@@ -24,8 +24,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/health").permitAll()
-                                .requestMatchers(HttpMethod.GET,
+                        auth.requestMatchers(HttpMethod.GET,
                                         "/health",
                                         "/stations/*",
                                         "/stations/list",
