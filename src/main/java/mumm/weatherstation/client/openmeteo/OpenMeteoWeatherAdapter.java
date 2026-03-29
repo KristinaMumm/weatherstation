@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,13 +19,20 @@ import java.util.stream.Collectors;
 public class OpenMeteoWeatherAdapter implements WeatherAdapter {
 
     private static final List<String> CURRENT_PARAMS = List.of("temperature_2m", "wind_speed_10m", "precipitation");
+
     private static final String WIND_SPEED_UNIT = "ms";
+
     private final String baseUrl;
+
     private final RestTemplate restTemplate;
+
     private final WeatherMapper weatherMapper;
 
-    public OpenMeteoWeatherAdapter(@Value("${openmeteo.base-url}") String baseUrl, RestTemplate restTemplate,
-                                   WeatherMapper weatherMapper) {
+    public OpenMeteoWeatherAdapter(
+            @Value("${openmeteo.base-url}") String baseUrl,
+            RestTemplate restTemplate,
+            WeatherMapper weatherMapper
+    ) {
         this.baseUrl = baseUrl;
         this.restTemplate = restTemplate;
         this.weatherMapper = weatherMapper;
@@ -79,7 +87,7 @@ public class OpenMeteoWeatherAdapter implements WeatherAdapter {
 
     private List<WeatherDto> mapToDto(List<StationDto> stations, List<WeatherResponse> responses) {
         // TODO : what if Open-Meteo changes order of coordinates?
-        List<WeatherDto> result = new java.util.ArrayList<>();
+        List<WeatherDto> result = new ArrayList<>();
 
         for (int i = 0; i < stations.size(); i++) {
             result.add(weatherMapper.toDto(stations.get(i), responses.get(i)));

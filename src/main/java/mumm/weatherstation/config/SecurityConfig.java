@@ -21,21 +21,22 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         return http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/health")
-                        .permitAll()
-                        .requestMatchers("/stations/*/weather")
-                        .permitAll()
-                        .requestMatchers("/weather/batch")
-                        .permitAll()
-                        .anyRequest()
-                        .authenticated())
+                .authorizeHttpRequests(auth ->
+                        auth.requestMatchers("/health").permitAll()
+                                .requestMatchers("/stations/*/weather").permitAll()
+                                .requestMatchers("/weather/batch").permitAll()
+                                .anyRequest().authenticated()
+                )
                 .httpBasic(Customizer.withDefaults())
                 .build();
     }
 
     @Bean
     public UserDetailsService userDetailsService() {
-        UserDetails user = User.withUsername("admin").password(passwordEncoder().encode("password")).build();
+        UserDetails user = User
+                .withUsername("admin")
+                .password(passwordEncoder().encode("password"))
+                .build();
 
         return new InMemoryUserDetailsManager(user);
     }

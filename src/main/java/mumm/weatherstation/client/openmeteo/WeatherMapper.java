@@ -8,8 +8,12 @@ import org.springframework.stereotype.Component;
 public class WeatherMapper {
 
     public WeatherDto toDto(StationDto station, WeatherResponse response) {
-        return new WeatherDto(station.id(), response.current().temperature(), response.current().windSpeed(),
-                response.current().precipitation());
+        return new WeatherDto(
+                station.id(),
+                response.current().temperature(),
+                response.current().windSpeed(),
+                response.current().precipitation()
+        );
     }
 
 }

@@ -18,7 +18,9 @@ public class StationManagerController {
     }
 
     @GetMapping("stations/{id}")
-    public Response<StationDto> getStation(@PathVariable Long id) {
+    public Response<StationDto> getStation(
+            @PathVariable Long id
+    ) {
         return Response.success(this.stationService.get(id));
     }
 
@@ -28,13 +30,18 @@ public class StationManagerController {
     }
 
     @PutMapping("stations/new")
-    public Response<StationDto> insertStation(@RequestBody StationRequest request) {
+    public Response<StationDto> insertStation(
+            @RequestBody StationRequest request
+    ) {
         StationDto newStation = this.stationService.insert(request);
         return Response.success(newStation);
     }
 
     @PostMapping("stations/{id}")
-    public Response<StationDto> updateStation(@PathVariable Long id, @RequestBody StationRequest request) {
+    public Response<StationDto> updateStation(
+            @PathVariable Long id,
+            @RequestBody StationRequest request
+    ) {
         return Response.success(this.stationService.update(id, request));
     }
 
