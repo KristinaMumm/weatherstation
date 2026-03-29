@@ -7,9 +7,11 @@ import mumm.weatherstation.mapper.StationMapper;
 import mumm.weatherstation.repository.StationRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class StationService {
@@ -28,7 +30,25 @@ public class StationService {
     }
 
     public List<StationDto> get(Set<Long> ids) {
-        return stationRepository.findAllById(ids).stream().map(stationMapper::toResponse).toList();
+
+        List<Station> stations = stationRepository.findAllById(ids);
+
+        if (stations.size() != ids.size()) {
+            Set<Long> foundIds = stations.stream()
+                    .map(Station::getId)
+                    .collect(Collectors.toSet());
+
+            Set<Long> missing = new HashSet<>(ids);
+            missing.removeAll(foundIds);
+
+            throw new NoSuchElementException(
+                    "Stations not found: " + missing
+            );
+        }
+
+        return stations.stream()
+                .map(stationMapper::toResponse)
+                .toList();
     }
 
     public List<StationDto> getAll() {
