@@ -25,7 +25,7 @@ public class StationManagerController {
         return Response.success(this.stationService.get(id));
     }
 
-    @GetMapping("stations/list")
+    @GetMapping("stations")
     public Response<List<StationDto>> getStations() {
         return Response.success(this.stationService.getAll());
     }
@@ -42,6 +42,7 @@ public class StationManagerController {
     @PutMapping("stations/{id}")
     public Response<StationDto> updateStation(
             @PathVariable Long id,
+            @Valid
             @RequestBody StationRequest request
     ) {
         return Response.success(this.stationService.update(id, request));
