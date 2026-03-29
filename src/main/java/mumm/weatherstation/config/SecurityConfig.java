@@ -23,8 +23,16 @@ public class SecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/health").permitAll()
-                                .requestMatchers("/stations/*/weather").permitAll()
-                                .requestMatchers("/weather/batch").permitAll()
+                                .requestMatchers(
+                                        "/health",
+                                        "/stations/*/weather",
+                                        "/weather/batch",
+
+                                        //API documentation
+                                        "/docs",
+                                        "/swagger-ui/**",
+                                        "/api-docs/**"
+                                ).permitAll()
                                 .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
