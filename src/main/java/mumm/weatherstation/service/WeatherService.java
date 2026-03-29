@@ -1,9 +1,9 @@
 package mumm.weatherstation.service;
 
-import mumm.weatherstation.client.openmeteo.OpenMeteoClient;
 import mumm.weatherstation.controller.dto.StationDto;
 import mumm.weatherstation.controller.dto.WeatherBatchRequest;
 import mumm.weatherstation.controller.dto.WeatherDto;
+import mumm.weatherstation.service.adapter.WeatherAdapter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,17 +13,17 @@ public class WeatherService {
 
 	private final StationService stationService;
 
-	private final OpenMeteoClient weatherDataClient;
+	private final WeatherAdapter weatherAdapter;
 
-	public WeatherService(StationService stationService, OpenMeteoClient weatherDataClient) {
+	public WeatherService(StationService stationService, WeatherAdapter weatherAdapter) {
 		this.stationService = stationService;
-		this.weatherDataClient = weatherDataClient;
+		this.weatherAdapter = weatherAdapter;
 	}
 
 	public List<WeatherDto> getWeatherData(WeatherBatchRequest request) {
 		List<StationDto> stations = stationService.get(request.stationIds());
 
-		return this.weatherDataClient.getWeatherData(stations);
+		return this.weatherAdapter.getWeather(stations);
 	}
 
 }
