@@ -16,7 +16,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoSuchElementException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Response<Void> handleNotFound(NoSuchElementException ex) {
-        return Response.error("not_found", "Element is not found");
+        return Response.error("not_found", ex.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
