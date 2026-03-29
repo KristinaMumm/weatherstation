@@ -45,4 +45,12 @@ public class StationManagerController {
         return Response.success(this.stationService.update(id, request));
     }
 
+    @DeleteMapping("stations/{id}")
+    public Response<Void> deleteStation(
+            @PathVariable Long id
+    ) {
+        this.stationService.delete(id);
+        return Response.success(null);
+    }
+
 }

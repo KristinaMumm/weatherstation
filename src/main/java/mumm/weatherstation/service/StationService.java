@@ -26,12 +26,12 @@ public class StationService {
     }
 
     public StationDto get(Long id) {
-        return stationMapper.toResponse(getEntity(id));
+        return this.stationMapper.toResponse(getEntity(id));
     }
 
     public List<StationDto> get(Set<Long> ids) {
 
-        List<Station> stations = stationRepository.findAllById(ids);
+        List<Station> stations = this.stationRepository.findAllById(ids);
 
         if (stations.size() != ids.size()) {
             Set<Long> foundIds = stations.stream()
@@ -47,17 +47,17 @@ public class StationService {
         }
 
         return stations.stream()
-                .map(stationMapper::toResponse)
+                .map(this.stationMapper::toResponse)
                 .toList();
     }
 
     public List<StationDto> getAll() {
-        return stationRepository.findAll().stream().map(stationMapper::toResponse).toList();
+        return this.stationRepository.findAll().stream().map(this.stationMapper::toResponse).toList();
     }
 
     public StationDto insert(StationRequest request) {
         Station station = stationMapper.toEntity(request);
-        return stationMapper.toResponse(stationRepository.save(station));
+        return this.stationMapper.toResponse(this.stationRepository.save(station));
     }
 
     public StationDto update(Long id, StationRequest request) {
@@ -65,11 +65,15 @@ public class StationService {
 
         existing.update(request.name(), request.latitude(), request.longitude());
 
-        return stationMapper.toResponse(stationRepository.save(existing));
+        return this.stationMapper.toResponse(this.stationRepository.save(existing));
+    }
+
+    public void delete(Long id) {
+        this.stationRepository.deleteById(id);
     }
 
     private Station getEntity(Long id) {
-        return stationRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Station not found: " + id));
+        return this.stationRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Station not found: " + id));
     }
 
 }
