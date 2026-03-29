@@ -19,13 +19,6 @@ public class WeatherDataController {
         this.weatherService = weatherService;
     }
 
-    @GetMapping("/stations/{id}/weather")
-    public Response<String> getStationWeather(
-            @PathVariable String id
-    ) {
-        return Response.success("Hello World!");
-    }
-
     @PostMapping("/weather/batch")
     public Response<List<WeatherDto>> getStationWeatherBatch(
             @RequestBody WeatherBatchRequest request

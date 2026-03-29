@@ -2,6 +2,7 @@ package mumm.weatherstation.controller.exception;
 
 import mumm.weatherstation.controller.dto.Response;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -29,6 +30,21 @@ public class GlobalExceptionHandler {
                 expectedType);
 
         return Response.error("invalid_type", message);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Response<Void> handleInvalidJson(HttpMessageNotReadableException ex) {
+        return Response.error(
+                "invalid_json",
+                "Request body contains invalid data type"
+        );
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Response<Void> handleGeneric(Exception ex) {
+        return Response.error("internal_server_error", "Unexpected error occurred");
     }
 
 }
