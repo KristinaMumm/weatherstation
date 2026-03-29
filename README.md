@@ -108,7 +108,7 @@ Asukoha lisamine
 
 Päring
 ```bash
-curl --location --request PUT 'localhost:8080/stations/new' \
+curl --location --request POST 'localhost:8080/stations' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Basic YWRtaW46cGFzc3dvcmQ=' \
 --data '{
