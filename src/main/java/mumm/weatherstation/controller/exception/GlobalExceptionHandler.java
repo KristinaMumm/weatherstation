@@ -3,11 +3,13 @@ package mumm.weatherstation.controller.exception;
 import mumm.weatherstation.controller.dto.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestControllerAdvice
@@ -32,6 +34,24 @@ public class GlobalExceptionHandler {
         return Response.error("invalid_type", message);
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Response<Void> handleValidationErrors(MethodArgumentNotValidException ex) {
+
+        List<String> errors = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(error -> String.format(
+                        "Invalid value '%s' for field '%s': %s",
+                        error.getRejectedValue(),
+                        error.getField(),
+                        error.getDefaultMessage()
+                ))
+                .toList();
+
+        return Response.error("validation_error", errors.toString());
+    }
+
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Response<Void> handleInvalidJson(HttpMessageNotReadableException ex) {
@@ -40,11 +60,4 @@ public class GlobalExceptionHandler {
                 "Request body contains invalid data type"
         );
     }
-
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Response<Void> handleGeneric(Exception ex) {
-        return Response.error("internal_server_error", "Unexpected error occurred");
-    }
-
 }

@@ -1,5 +1,6 @@
 package mumm.weatherstation.controller;
 
+import jakarta.validation.Valid;
 import mumm.weatherstation.controller.dto.Response;
 import mumm.weatherstation.controller.dto.StationDto;
 import mumm.weatherstation.controller.dto.StationRequest;
@@ -31,6 +32,7 @@ public class StationManagerController {
 
     @PostMapping("stations")
     public Response<StationDto> insertStation(
+            @Valid
             @RequestBody StationRequest request
     ) {
         StationDto newStation = this.stationService.insert(request);
