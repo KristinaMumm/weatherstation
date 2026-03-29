@@ -1,5 +1,6 @@
 package mumm.weatherstation.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -40,10 +41,13 @@ public class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
+    public UserDetailsService userDetailsService(
+            @Value("${app.security.username}") String username,
+            @Value("${app.security.password}") String password
+    ) {
         UserDetails user = User
-                .withUsername("admin")
-                .password(passwordEncoder().encode("password"))
+                .withUsername(username)
+                .password(passwordEncoder().encode(password))
                 .build();
 
         return new InMemoryUserDetailsManager(user);

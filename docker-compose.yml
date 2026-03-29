@@ -6,14 +6,37 @@ services:
     container_name: mysql_db
     restart: always
     ports:
-      - "3306:3306"
+      - "${MYSQL_PORT}:3306"
     environment:
       MYSQL_DATABASE: weatherstation
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - mysql_data:/var/lib/mysql
+
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    container_name: weatherstation_app
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      MYSQL_URL: jdbc:mysql://mysql:${MYSQL_PORT}/weatherstation?allowPublicKeyRetrieval=true&useSSL=false
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      APP_SECURITY_USERNAME: ${ADMIN_USERNAME}
+      APP_SECURITY_PASSWORD: ${ADMIN_PASSWORD}
+
 
 volumes:
   mysql_data:

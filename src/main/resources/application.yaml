@@ -3,9 +3,9 @@ spring:
     name: weatherstation
 
   datasource:
-    url: jdbc:mysql://localhost:3306/weatherstation?allowPublicKeyRetrieval=true&useSSL=false
-    username: user
-    password: password
+    url: ${MYSQL_URL}
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}
 
   flyway:
     enabled: true
@@ -19,3 +19,8 @@ springdoc:
     path: /docs
   api-docs:
     path: /api-docs
+
+app:
+  security:
+    username: ${APP_ADMIN_USERNAME}
+    password: ${APP_ADMIN_PASSWORD}
