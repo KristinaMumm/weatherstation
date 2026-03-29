@@ -5,7 +5,7 @@ asukohtade haldamise funktsionaalsust.
 
 ## Tehnoloogiad
 * Java 17
-* Spring Boot
+* Spring Boot 4
   * Spring Web (REST API)
   * Spring Data JPA
   * Spring Security
@@ -20,7 +20,7 @@ asukohtade haldamise funktsionaalsust.
 
 Rakenduse ülesseadmiseks on vajalik Docker.
 
-Esmaseks rakenduse käivitamiseks:
+Esmaseks rakenduse käivitamiseks (toimub rakenduse package ja konteinerite loomine):
 
     docker-compose up --build -d
 
@@ -49,8 +49,7 @@ Need on vaikimisi väärtused, mida loetakse failist `.env`
 
 Flyway migratsiooniga lisatakse tabel `station` koos mõne kirjega.
 
-Rakenduse API endpoindid on kättesaadavad siin: http://localhost:8080/docs. 
-Dokumentatsioon on suuresjoones tõetruu, kuid vajab lisa nokitsemist segaduste vältimiseks.
+Rakenduse API endpoindid on kättesaadavad siin: http://localhost:8080/docs.
 
 Järgnevad endpoindid on avalikud, ülejäänud nõuavad autentimist:
 
@@ -64,7 +63,7 @@ Autentimine on lisatud mõttega, et igaüks ei saaks muuta rakenduse andmeid.
 
 ### Funktsionaalsuste kirjeldus
 
-Rakendusega on võimalik teha CRUD operatsioone asukohtade pihta. Samuti on võimalik pärida ka asukoha ilmaandmeid.
+Rakendus võimaldab hallata asukohti (CRUD) ning pärida nende ilmaandmeid.
 
 
 #### Mõned näidised:
@@ -73,8 +72,7 @@ Asukohtade pärimine
 
 Päring
 ```bash
-curl --location --request GET 'localhost:8080/stations/list' \
---header 'Content-Type: application/json' \
+curl --location --request GET 'localhost:8080/stations'
 ```
 Vastus
 ```json
@@ -144,8 +142,7 @@ Asukoha ilmaandmed
 
 Päring
 ```bash
-curl --location --request GET 'localhost:8080/stations/1/weather' \
---header 'Content-Type: application/json' \
+curl --location --request GET 'localhost:8080/stations/1/weather'
 ```   
 Vastus
 ```json
@@ -164,6 +161,7 @@ Vastus
 
 
 ## Edasiarendus
-Kuna ilmaandmed ei uuene iga hetk, Open-Meteo API tagastab ka kui tihti andmed uuenevad, siis edasiarendusena saaks
-ilmaandmeid vahemällu salvestada. See aitaks vältida liigseid päringuid kolmanda osapoole teenusele ning tasulise API
-puhul vähendada kulusid.
+Kuna ilmaandmed ei muutu väga tihti, võiks need vahemällu salvestada.
+See vähendaks päringute arvu välise API vastu ning parandaks jõudlust.
+
+Logimise lisamine
