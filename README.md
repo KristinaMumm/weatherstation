@@ -69,7 +69,8 @@ Rakendusega on võimalik teha CRUD operatsioone asukohtade pihta. Samuti on või
 
 #### Mõned näidised:
 
-Asukohtade pärimine:
+Asukohtade pärimine
+
 Päring
 ```bash
 curl --location --request GET 'localhost:8080/stations/list' \
@@ -104,6 +105,7 @@ Vastus
 ```
 
 Asukoha lisamine
+
 Päring
 ```bash
 curl --location --request PUT 'localhost:8080/stations/new' \
@@ -130,6 +132,7 @@ Vastus
 ```
 
 Asukoha kustutamine
+
 Päring
 ```bash
 curl --location --request DELETE 'localhost:8080/stations/1' \
@@ -138,6 +141,7 @@ curl --location --request DELETE 'localhost:8080/stations/1' \
 ``` 
 
 Asukoha ilmaandmed
+
 Päring
 ```bash
 curl --location --request GET 'localhost:8080/stations/1/weather' \
