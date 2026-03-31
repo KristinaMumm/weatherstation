@@ -18,15 +18,12 @@ public class StationService {
 
     private final StationRepository stationRepository;
 
-    private final StationMapper stationMapper;
-
-    public StationService(StationRepository stationRepository, StationMapper stationMapper) {
+    public StationService(StationRepository stationRepository) {
         this.stationRepository = stationRepository;
-        this.stationMapper = stationMapper;
     }
 
     public StationDto get(Long id) {
-        return this.stationMapper.toResponse(getEntity(id));
+        return StationMapper.toResponse(getEntity(id));
     }
 
     public List<StationDto> get(Set<Long> ids) {
@@ -50,17 +47,17 @@ public class StationService {
         }
 
         return stations.stream()
-                .map(this.stationMapper::toResponse)
+                .map(StationMapper::toResponse)
                 .toList();
     }
 
     public List<StationDto> getAll() {
-        return this.stationRepository.findAll().stream().map(this.stationMapper::toResponse).toList();
+        return this.stationRepository.findAll().stream().map(StationMapper::toResponse).toList();
     }
 
     public StationDto insert(StationRequest request) {
-        Station station = stationMapper.toEntity(request);
-        return this.stationMapper.toResponse(this.stationRepository.save(station));
+        Station station = StationMapper.toEntity(request);
+        return StationMapper.toResponse(this.stationRepository.save(station));
     }
 
     public StationDto update(Long id, StationRequest request) {
@@ -68,7 +65,7 @@ public class StationService {
 
         existing.update(request.name(), request.latitude(), request.longitude());
 
-        return this.stationMapper.toResponse(this.stationRepository.save(existing));
+        return StationMapper.toResponse(this.stationRepository.save(existing));
     }
 
     public void delete(Long id) {
