@@ -185,14 +185,15 @@ Lisatud on kolme tüüpi teste:
 * Integratsioonitestid `StationManagerController` jaoks, et kontrollida, kas API päringutele tagastatakse õiged vastused
 
 Teste tuleks kindlasti edasi arendada. Vaja on lisada uusi teste, et katta kõik funktsionaalsused ja äärejuhtumid.
-Samuti oleks vajalik refaktoreerida olemasolevaid teste, viies korduv loogika abimeetoditesse. Praegusel kujul kipuvad testid sisaldama palju korduvat koodi, mis muudab nende haldamise keeruliseks – eriti olukorras, kus koodis tehakse muudatusi, mis mõjutavad mitut testi korraga.
+Samuti oleks vajalik refaktoreerida olemasolevaid teste ja viia korduv loogika abifunktsioonidesse. 
+Praegusel kujul olevaid teste on tulevikus keeruline hallata.
 
-Lisaks oleks mõistlik uurida, kas olemasolevad migratsioonid mõjutavad testide käivitamise kiirust. Hetkel on ainult üks migratsioon ning pole täielikult selge, kas ja kuidas see testide käigus rakendub.
+Lisaks oleks mõistlik uurida, kas olemasolevad migratsioonid mõjutavad testide käivitamise kiirust. 
+Hetkel on ainult üks migratsioon ning ma pole kindel, kas ja kuidas see testide käigus rakendub.
 
 ## Arhitektuurilised otsused, milles veidi kahtlen
 
 Hetkel on kõik API vastused nn `result envelope` sees. See tähendab, et iga vastus sisaldab vähemalt kahte välja: `data` ja `errors`.
-
 Eelistan seda lähenemist, kuna see tagab ühtse struktuuri sõltumata HTTP staatuskoodist – alati on olemas samad väljad, kust andmeid lugeda.
 Lisaks võimaldab see lisada ka õnnestunud päringute puhul hoiatusi või osalisi vigu. Näiteks massimporti korral võib osa kirjeid edukalt salvestuda ja osa ebaõnnestuda.
 
