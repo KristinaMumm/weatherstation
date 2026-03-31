@@ -165,3 +165,31 @@ Kuna ilmaandmed ei muutu väga tihti, võiks need vahemällu salvestada.
 See vähendaks päringute arvu välise API vastu ning parandaks jõudlust.
 
 Logimise lisamine
+
+Leida parem java koodi formatter ja lisada projektile. Kasutasin hetkel `google-java-formatter`, aga mulle ei meeldi, kuidas see osati tegutseb.
+
+## Testid
+
+Lisatud on kolme tüüpi teste:
+
+* Unit-testid `StationService` jaoks
+* Integratsioonitestid `StationService` jaoks, et veenduda andmebaasi salvestamise korrektsuses
+* Integratsioonitestid `StationManagerController` jaoks, et kontrollida, kas API päringutele tagastatakse õiged vastused
+
+Teste tuleks kindlasti edasi arendada. Vaja on lisada uusi teste, et katta kõik funktsionaalsused ja äärejuhtumid.
+Samuti oleks vajalik refaktoreerida olemasolevaid teste, viies korduv loogika abimeetoditesse. Praegusel kujul kipuvad testid sisaldama palju korduvat koodi, mis muudab nende haldamise keeruliseks – eriti olukorras, kus koodis tehakse muudatusi, mis mõjutavad mitut testi korraga.
+
+Lisaks oleks mõistlik uurida, kas olemasolevad migratsioonid mõjutavad testide käivitamise kiirust. Hetkel on ainult üks migratsioon ning pole täielikult selge, kas ja kuidas see testide käigus rakendub.
+
+## Arhitektuurilised otsused, milles veidi kahtlen
+
+Hetkel on kõik API vastused nn `result envelope` sees. See tähendab, et iga vastus sisaldab vähemalt kahte välja: `data` ja `errors`.
+
+Eelistan seda lähenemist, kuna see tagab ühtse struktuuri sõltumata HTTP staatuskoodist – alati on olemas samad väljad, kust andmeid lugeda.
+Lisaks võimaldab see lisada ka õnnestunud päringute puhul hoiatusi või osalisi vigu. Näiteks massimporti korral võib osa kirjeid edukalt salvestuda ja osa ebaõnnestuda.
+
+Teine kahtlus on seotud laius- ja pikkuskraadide valideerimisega. Kas seda peaks tegema nii controlleri kui ka andmebaasi tasemel?
+Minu hinnangul on mõistlik kasutada mõlemat:
+
+* Controlleri tasemel valideerimine tagab parema dokumentatsiooni ja varajase vea tagasiside kasutajale
+* Andmebaasi tasemel valideerimine tagab, et sõltumata sellest, kust andmeid lisatakse, jäävad väärtused alati lubatud piiridesse
