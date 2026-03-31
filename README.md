@@ -66,7 +66,7 @@ Autentimine on lisatud mõttega, et igaüks ei saaks muuta rakenduse andmeid.
 Rakendus võimaldab hallata asukohti (CRUD) ning pärida nende ilmaandmeid.
 
 
-#### Mõned näidised:
+#### Mõned näidised: (rohkemate endpointide nägemiseks külasta API dokumentatsiooni)
 
 Asukohtade pärimine
 
@@ -162,7 +162,15 @@ Vastus
 
 ## Edasiarendus
 Kuna ilmaandmed ei muutu väga tihti, võiks need vahemällu salvestada.
-See vähendaks päringute arvu välise API vastu ning parandaks jõudlust.
+See vähendaks päringute arvu välise API vastu(äkki isegi hoiaks niimoodi raha kokku, kui tegemist tasuliste päringutega) 
+ning parandaks jõudlust.
+
+Lisaks tuleb arvestada, et Open-Meteo ei pruugi tagastada andmeid täpselt etteantud koordinaatidele, vaid võib need 
+ümardada või kasutada lähimat saadaval olevat punkti.
+See tähendab, et tuleb kontrollida, mis juhtub olukorras, kus Open-Meteo API ümardab kahe või enama erineva asukoha koordinaadid samaks.
+Kas teenus tagastab sellisel juhul ühe või mitu ilmaandmete kirjet sama ümardatud koordinaadi kohta?
+See küsimus muutub oluliseks ainult juhul, kui peaks olema võimalik pärida mitme asukoha ilmaandmeid korraga.
+Kuigi vastav loogika on koodis olemas, ei ole sellele hetkel eraldi endpointi lisatud.
 
 Logimise lisamine
 
