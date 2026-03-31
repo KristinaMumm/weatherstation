@@ -26,8 +26,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers(HttpMethod.GET,
                                         "/health",
+                                        "/stations",
                                         "/stations/*",
-                                        "/stations/list",
                                         "/stations/*/weather",
 
                                         //API documentation

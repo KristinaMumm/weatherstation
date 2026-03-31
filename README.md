@@ -55,7 +55,7 @@ Järgnevad endpoindid on avalikud, ülejäänud nõuavad autentimist:
 
     GET "/health",                -- test endpoint veendumaks, et rakendus töötab 
     GET "/stations/{id}",         -- etteantud asukoha pärimine
-    GET "/stations/list",         -- kõikide asukohtade pärimine
+    GET "/stations",              -- kõikide asukohtade pärimine
     GET "/stations/{id}/weather", -- etteantud asukoha ilmaandmed
     "/docs",                      -- API dokumentatsioon
 
